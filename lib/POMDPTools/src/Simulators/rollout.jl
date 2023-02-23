@@ -40,13 +40,13 @@ function RolloutSimulator(;rng=Random.GLOBAL_RNG,
 end
 
 
-@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy) begin
+POMDPLinter.@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy) begin
     @req updater(::typeof(policy))
     bu = updater(policy)
     @subreq simulate(sim, pomdp, policy, bu)
 end
 
-@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, bu::Updater) begin
+POMDPLinter.@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, bu::Updater) begin
     @req initialstate(::typeof(pomdp))
     dist = initialstate(pomdp)
     @subreq simulate(sim, pomdp, policy, bu, dist)
@@ -58,7 +58,7 @@ function simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, bu::Updat
 end
 
 
-@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, updater::Updater, initial_belief) begin
+POMDPLinter.@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, updater::Updater, initial_belief) begin
     @req rand(::typeof(sim.rng), ::typeof(initial_belief))
     @subreq simulate(sim, pomdp, policy, updater, initial_belief, s)
 end
@@ -68,7 +68,7 @@ function simulate(sim::RolloutSimulator, pomdp::POMDP{S}, policy::Policy, update
     return simulate(sim, pomdp, policy, updater, initial_belief, s)
 end
 
-@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, updater::Updater, initial_belief, s) begin
+POMDPLinter.@POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, updater::Updater, initial_belief, s) begin
     P = typeof(pomdp)
     S = statetype(P)
     A = actiontype(P)
@@ -123,12 +123,12 @@ function simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, updater::
     return r_total
 end
 
-@POMDP_require simulate(sim::RolloutSimulator, mdp::MDP, policy::Policy) begin
+POMDPLinter.@POMDP_require simulate(sim::RolloutSimulator, mdp::MDP, policy::Policy) begin
     istate = initialstate(mdp, sim.rng)
     @subreq simulate(sim, mdp, policy, istate)
 end
 
-@POMDP_require simulate(sim::RolloutSimulator, mdp::MDP, policy::Policy, initialstate) begin
+POMDPLinter.@POMDP_require simulate(sim::RolloutSimulator, mdp::MDP, policy::Policy, initialstate) begin
     P = typeof(mdp)
     S = typeof(initialstate)
     A = actiontype(mdp)

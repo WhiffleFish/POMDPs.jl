@@ -42,13 +42,13 @@ function HistoryRecorder(;rng=Random.GLOBAL_RNG,
     return HistoryRecorder(rng, capture_exception, show_progress, max_steps, eps)
 end
 
-@POMDP_require simulate(sim::HistoryRecorder, pomdp::POMDP, policy::Policy) begin
+POMDPLinter.@POMDP_require simulate(sim::HistoryRecorder, pomdp::POMDP, policy::Policy) begin
     @req updater(::typeof(policy))
     up = updater(policy)
     @subreq simulate(sim, pomdp, policy, up)
 end
 
-@POMDP_require simulate(sim::HistoryRecorder, pomdp::POMDP, policy::Policy, bu::Updater) begin
+POMDPLinter.@POMDP_require simulate(sim::HistoryRecorder, pomdp::POMDP, policy::Policy, bu::Updater) begin
     @req initialstate(::typeof(pomdp))
     dist = initialstate(pomdp)
     @subreq simulate(sim, pomdp, policy, bu, dist)
@@ -59,7 +59,7 @@ function simulate(sim::HistoryRecorder, pomdp::POMDP, policy::Policy, bu::Update
     return simulate(sim, pomdp, policy, bu, dist)
 end
 
-@POMDP_require simulate(sim::HistoryRecorder, pomdp::POMDP, policy::Policy, bu::Updater, dist::Any) begin
+POMDPLinter.@POMDP_require simulate(sim::HistoryRecorder, pomdp::POMDP, policy::Policy, bu::Updater, dist::Any) begin
     P = typeof(pomdp)
     S = statetype(pomdp)
     A = actiontype(pomdp)
@@ -75,7 +75,7 @@ end
 end
 
 function simulate(sim::HistoryRecorder,
-                           pomdp::POMDP{S,A,O}, 
+                           pomdp::POMDP{S,A,O},
                            policy::Policy,
                            bu::Updater,
                            initialstate_dist::Any,
@@ -87,7 +87,7 @@ function simulate(sim::HistoryRecorder,
     if sim.eps != nothing
         max_steps = min(max_steps, ceil(Int,log(sim.eps)/log(discount(pomdp))))
     end
-    
+
     if sim.show_progress
         if (sim.max_steps == nothing) && (sim.eps == nothing)
             error("If show_progress=true in a HistoryRecorder, you must also specify max_steps or eps.")
@@ -115,12 +115,12 @@ function simulate(sim::HistoryRecorder,
     return SimHistory(promote_history(history), discount(pomdp), exception, backtrace)
 end
 
-@POMDP_require simulate(sim::HistoryRecorder, mdp::MDP, policy::Policy) begin
+POMDPLinter.@POMDP_require simulate(sim::HistoryRecorder, mdp::MDP, policy::Policy) begin
     init_state = rand(sim.rng, initialstate(mdp))
     @subreq simulate(sim, mdp, policy, init_state)
 end
 
-@POMDP_require simulate(sim::HistoryRecorder, mdp::MDP, policy::Policy, initialstate::Any) begin
+POMDPLinter.@POMDP_require simulate(sim::HistoryRecorder, mdp::MDP, policy::Policy, initialstate::Any) begin
     P = typeof(mdp)
     S = statetype(mdp)
     A = actiontype(mdp)
@@ -133,7 +133,7 @@ end
 function simulate(sim::HistoryRecorder,
                   mdp::MDP{S,A}, policy::Policy,
                   init_state::S=rand(sim.rng, initialstate(mdp))) where {S,A}
-    
+
     max_steps = something(sim.max_steps, typemax(Int))
     if sim.eps != nothing
         max_steps = min(max_steps, ceil(Int,log(sim.eps)/log(discount(mdp))))
@@ -154,7 +154,7 @@ function simulate(sim::HistoryRecorder,
     else
         prog = nothing
     end
-    
+
     history, exception, backtrace = collect_history(it, Val(sim.capture_exception), prog)
 
     if sim.show_progress

@@ -17,6 +17,7 @@ using ..POMDPDistributions
 
 # import Distributions: pdf, mode, mean, support
 # import POMDPLinter: @POMDP_require
+import POMDPLinter
 
 export
     render
@@ -63,7 +64,7 @@ export
     LazyCachedSAR
 include("state_action_reward.jl")
 
-export 
+export
     SparseTabularMDP,
     SparseTabularPOMDP,
     transition_matrix,

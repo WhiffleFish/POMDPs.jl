@@ -58,7 +58,7 @@ function ordered_vector(T::Type, index::Function, space, singular, plural=singul
     return a
 end
 
-@POMDP_require ordered_actions(mdp::Union{MDP,POMDP}) begin
+POMDPLinter.@POMDP_require ordered_actions(mdp::Union{MDP,POMDP}) begin
     P = typeof(mdp)
     @req actionindex(::P, ::actiontype(P))
     @req actions(::P)
@@ -66,7 +66,7 @@ end
     @req length(::typeof(as))
 end
 
-@POMDP_require ordered_states(mdp::Union{MDP,POMDP}) begin
+POMDPLinter.@POMDP_require ordered_states(mdp::Union{MDP,POMDP}) begin
     P = typeof(mdp)
     @req stateindex(::P, ::statetype(P))
     @req states(::P)
@@ -74,7 +74,7 @@ end
     @req length(::typeof(ss))
 end
 
-@POMDP_require ordered_observations(mdp::Union{MDP,POMDP}) begin
+POMDPLinter.@POMDP_require ordered_observations(mdp::Union{MDP,POMDP}) begin
     P = typeof(mdp)
     @req obsindex(::P, ::obstype(P))
     @req observations(::P)

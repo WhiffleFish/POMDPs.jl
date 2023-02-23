@@ -36,7 +36,7 @@ function SparseTabularMDP(mdp::MDP)
     return SparseTabularMDP(T, R, ip, ts, discount(mdp))
 end
 
-@POMDP_require SparseTabularMDP(mdp::MDP) begin
+POMDPLinter.@POMDP_require SparseTabularMDP(mdp::MDP) begin
     P = typeof(mdp)
     S = statetype(P)
     A = actiontype(P)
@@ -117,7 +117,7 @@ function SparseTabularPOMDP(pomdp::POMDP)
     return SparseTabularPOMDP(T, R, O, ip, ts, discount(pomdp))
 end
 
-@POMDP_require SparseTabularPOMDP(pomdp::POMDP) begin
+POMDPLinter.@POMDP_require SparseTabularPOMDP(pomdp::POMDP) begin
     P = typeof(pomdp)
     S = statetype(P)
     A = actiontype(P)

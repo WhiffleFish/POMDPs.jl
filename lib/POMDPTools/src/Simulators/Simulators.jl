@@ -10,7 +10,8 @@ using DataFrames
 using Distributed
 using NamedTupleTools
 
-import POMDPLinter: @POMDP_require, @req, @subreq, implemented
+import POMDPLinter
+import POMDPLinter: @req, @subreq, implemented
 import POMDPs: simulate, discount
 
 export RolloutSimulator
